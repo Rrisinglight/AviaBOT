@@ -6,8 +6,8 @@ def insert_tg_user(tg_id, tg_first_name, tg_last_name, username):
     try:
         connection = mysql.connector.connect(host='localhost',
                                              database='aviators',
-                                             user='root',
-                                             password='3356')
+                                             user='user1',
+                                             password='829')
         cursor = connection.cursor()
         mySql_insert_query = f"""INSERT INTO tg_users (tg_id, tg_first_name, tg_last_name, username)
         VALUES ({tg_id}, "{tg_first_name}", "{tg_last_name}", "{username}")
@@ -31,8 +31,8 @@ def insert_varibles_into_table(tg_id, first_name, last_name, academ_group):
     try:
         connection = mysql.connector.connect(host='localhost',
                                              database='aviators',
-                                             user='root',
-                                             password='3356')
+                                             user='user1',
+                                             password='829')
         cursor = connection.cursor()
         mySql_insert_query = f"""INSERT INTO users (tg_id, first_name, last_name, academ_group) 
         VALUES ({tg_id}, "{first_name}", "{last_name}", "{academ_group}")
@@ -55,15 +55,15 @@ def insert_varibles_into_table(tg_id, first_name, last_name, academ_group):
 def insert_key(tg_id, card):
     try:
 
-        if in_table(tg_id) == True:
+        if in_table(card) == True:
             return("Ключ уже зарегистрирован в системе")
         else:
             connection = mysql.connector.connect(host='localhost',
                                             database='aviators',
-                                            user='root',
-                                            password='3356')
+                                            user='user1',
+                                            password='829')
             cursor = connection.cursor()
-            mySql_insert_query = f"""Update users set RFID = {card} where tg_id = {tg_id}"""
+            mySql_insert_query = f"""Update users set RFID = '{card}' where tg_id = {tg_id}"""
 
             cursor.execute(mySql_insert_query)
             connection.commit()
@@ -76,21 +76,19 @@ def insert_key(tg_id, card):
             connection.close()
             
 
-def in_table(tg_id):
+def in_table(RFID):
     try:
         connection = mysql.connector.connect(host='localhost',
                                             database='aviators',
-                                            user='root',
-                                            password='3356')
+                                            user='user1',
+                                            password='829')
         cursor = connection.cursor()
-        
         #Проверка перед обновлением записи
-        sql_select_query = f"""SELECT EXISTS(SELECT RFID FROM users WHERE tg_id = {tg_id})"""
+        sql_select_query = f"""SELECT EXISTS(SELECT RFID FROM users WHERE RFID = '{RFID}')"""
         cursor.execute(sql_select_query)
         # fetch result
-        record = cursor.fetchall()
-        print(record)
-        return(record)
+        record = str(cursor.fetchall())
+        return(bool(int(record[2])))
 
     except mysql.connector.Error as error:
         print("Не удалось проверить наличие в таблице: {}".format(error))
@@ -103,10 +101,10 @@ def select():
     try:
         connection = mysql.connector.connect(host='localhost',
                                             database='aviators',
-                                            user='root',
-                                            password='3356')
+                                            user='user1',
+                                            password='829')
 
-        sql_select_Query = """SELECT users.tg_id, tg_users.username, users.first_name, users.last_name, users.academ_group, users.approved FROM users
+        sql_select_Query = """SELECT users.tg_id, tg_users.username, users.first_name, users.last_name, users.academ_group, tg_users.approved FROM users
                               JOIN tg_users ON tg_users.tg_id = users.tg_id
                               WHERE approved = FALSE """
         cursor = connection.cursor()
@@ -129,14 +127,14 @@ def approve(username, approve):
     try:
         connection = mysql.connector.connect(host='localhost',
                                         database='aviators',
-                                        user='root',
-                                        password='3356')
+                                        user='user1',
+                                        password='829')
         cursor = connection.cursor()
         mySql_insert_query = f"""SELECT tg_id FROM tg_users WHERE username = "{username}" """
         cursor.execute(mySql_insert_query)
         id = str(cursor.fetchone())
         id = "".join(i for i in id if i.isdecimal())
-        mySql_insert_query = f"""Update users set approved = {approve} where tg_id = {id}"""
+        mySql_insert_query = f"""Update tg_users set approved = {approve} where tg_id = {id}"""
 
         cursor.execute(mySql_insert_query)
         connection.commit()

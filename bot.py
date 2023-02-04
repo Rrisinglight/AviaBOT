@@ -1,4 +1,5 @@
-import bd, badRFID, mysql.connector, threading
+import bd, badRFID, mysql.connector, threading, time
+from multiprocessing import Process, Queue
 from mysql.connector import Error
 from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, InlineKeyboardButton
 from telegram.ext import Updater, CallbackContext, ConversationHandler, CallbackQueryHandler, MessageHandler, TypeHandler, CommandHandler, Filters
@@ -137,25 +138,26 @@ def welcome(update: Update, context: CallbackContext) -> int:
 
 
 def key(update: Update, context: CallbackContext) -> None:
-    badRFID.new_user = True
-    key_tred = threading.Thread(badRFID.door_new_user())
-    card = int(key_tred.start())
     context.bot.send_message(chat_id=update.effective_chat.id, text="Приложите карту к считывателю")
-    try:
-        key_tred.join(20.0)
-        badRFID.new_user = False
-    except RuntimeError:
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Вы не поднесли карту")
+    size = q.qsize()
+    time.sleep(20)
     
-    if bd.in_table(card) == True:
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Ключ уже зарегистрирован в системе")
+    if q.qsize() == size:
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Вы не поднесли карту")
     else:
-        bd.insert_key(user['id'], card)
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Ключ успешно записан" + str(card))
-        
-    badRFID.new_user = False
+        card = q.get()
+        if bd.in_table(card) == True:
+            context.bot.send_message(chat_id=update.effective_chat.id, text="Ключ уже зарегистрирован в системе")
+        else:
+            bd.insert_key(user['id'], card)
+            context.bot.send_message(chat_id=update.effective_chat.id, text="Ключ успешно записан: " + str(card))
+    
 
 def main() -> None:
+    global q
+    q = Queue()
+    door_tred = Process(target=badRFID.door, args=(q,))
+    door_tred.start()
 
     updater = Updater("5838936536:AAHWgfvpzUMWoUzsP37X2xZNrDSvlWxbizc")
 
