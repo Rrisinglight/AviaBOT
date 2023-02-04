@@ -1,49 +1,63 @@
+import bd
 import time
 import serial
 import RPi.GPIO as GPIO
 
-table = []
+new_user = False
 
-def in_table(id):
-    if id in table:
-        return(True)
-    else:
-        return(False)
+def door_new_user():
+    PortRF = serial.Serial('/dev/ttyS0', 9600)
+                
+    new_ID = ""
+
+    read_byte = (PortRF.read())
+
+    for Counter in range(12):
+        read_byte = (PortRF.read()).decode("utf-8")
+        new_ID += read_byte
+
+    PortRF.close()
+    return(new_ID)
+
+def door():
+
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+    GPIO.setup(23, GPIO.OUT)
+
+    GPIO.output(23, GPIO.HIGH)
+
+    def open_door():
+        GPIO.output(23, GPIO.LOW)
+        time.sleep(5)
+        GPIO.output(23, GPIO.HIGHT)
+        return()
 
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-GPIO.setup(23, GPIO.OUT)
+    try:
+        while True:
+            if new_user == False:
+                PortRF = serial.Serial('/dev/ttyS0', 9600)
 
-GPIO.output(23,GPIO.HIGH)
+                ID = ""
 
-def open_door():
-    GPIO.output(23,GPIO.LOW)
-    time.sleep(30)
+                read_byte = (PortRF.read())
 
-try:
-    while True:
-        print('Scan Your Card')
-        PortRF = serial.Serial('/dev/ttyS0', 9600)
+                for Counter in range(12):
+                    read_byte = (PortRF.read()).decode("utf-8")
+                    ID += read_byte
 
-        ID = ""
-        read_byte = (PortRF.read())
+                if bd.in_table(ID) == True:
+                    open_door()
+                else:
+                    print("Нет доступа")
 
-        for Counter in range(12):
-            read_byte = (PortRF.read()).decode("utf-8")
-            ID = ID + read_byte
-            if not in_table():
-                table.append(ID)
+                PortRF.close()
+                time.sleep(0.5)
+            else:
+                time.sleep(2)
 
-        PortRF.close()
-        if in_table(ID) == True:
-            print('Open')
-            open_door()
-            
-        else:
-            print('Close')
-
-except KeyboardInterrupt:
-    print("Stopped")
-finally:
-    GPIO.cleanup()
+    except KeyboardInterrupt:
+        print("Stopped")
+    finally:
+        GPIO.cleanup()

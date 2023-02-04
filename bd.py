@@ -99,7 +99,6 @@ def in_table(tg_id):
             connection.close()
             
 
-
 def select():
     try:
         connection = mysql.connector.connect(host='localhost',
@@ -124,51 +123,7 @@ def select():
         if connection.is_connected():
             connection.close()
             cursor.close()
-            
 
-
-def kostyl(loop_status):
-
-    try:
-        connection = mysql.connector.connect(host='localhost',
-                                             database='aviators',
-                                             user='root',
-                                             password='3356')
-        cursor = connection.cursor()
-        mySql_insert_query = f"""INSERT INTO kostyl (def_loop) VALUES ({loop_status})"""
-        cursor.execute(mySql_insert_query)
-        connection.commit()
-        print("Цикл остановлен")
-
-    except mysql.connector.Error as error:
-        print("Всё пошло по пизде {}".format(error))
-
-    finally:
-        if connection.is_connected():
-            cursor.close()
-            connection.close()
-
-def kostyl_status():
-    try:
-        connection = mysql.connector.connect(host='localhost',
-                                             database='aviators',
-                                             user='root',
-                                             password='3356')
-
-        sql_select_Query = "SELECT LAST_INSERT_ID();"
-        cursor = connection.cursor()
-        cursor.execute(sql_select_Query)
-        records = cursor.fetchall()
-        print("Текущий статус: " + str(records))
-        return(records)
-
-    except mysql.connector.Error as error:
-        print("Всё пошло по пизде {}".format(error))
-
-    finally:
-        if connection.is_connected():
-            cursor.close()
-            connection.close()
 
 def approve(username, approve):
     try:

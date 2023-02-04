@@ -1,10 +1,9 @@
-import bd, RFID, mysql.connector
+import bd, badRFID, mysql.connector, threading
 from mysql.connector import Error
 from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, InlineKeyboardButton
 from telegram.ext import Updater, CallbackContext, ConversationHandler, CallbackQueryHandler, MessageHandler, TypeHandler, CommandHandler, Filters
 from telegram_bot_pagination import InlineKeyboardPaginator
 
-from multiprocessing import Process
 
 TYPE, NAME, LAST_NAME, WELCOME, PREP = range(5)
 type_now = int
@@ -138,17 +137,23 @@ def welcome(update: Update, context: CallbackContext) -> int:
 
 
 def key(update: Update, context: CallbackContext) -> None:
-    bd.kostyl(loop_status=0)
-    card = int(RFID.new_card())
+    badRFID.new_user = True
+    key_tred = threading.Thread(badRFID.door_new_user())
+    card = int(key_tred.start())
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Приложите карту к считывателю")
+    try:
+        key_tred.join(20.0)
+        badRFID.new_user = False
+    except RuntimeError:
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Вы не поднесли карту")
     
     if bd.in_table(card) == True:
         context.bot.send_message(chat_id=update.effective_chat.id, text="Ключ уже зарегистрирован в системе")
     else:
         bd.insert_key(user['id'], card)
         context.bot.send_message(chat_id=update.effective_chat.id, text="Ключ успешно записан" + str(card))
-    bd.kostyl(loop_status=1)
-    RFID.polling()
-
+        
+    badRFID.new_user = False
 
 def main() -> None:
 
