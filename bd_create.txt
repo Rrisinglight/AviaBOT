@@ -1,21 +1,38 @@
-CREATE TABLE door_log (id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, user_id INT UNSIGNED, FOREIGN KEY (user_id) REFERENCES users (tg_id), door_status BOOL, log_date DATETIME)
-
-CREATE TABLE users (tg_id INT UNSIGNED PRIMARY KEY NOT NULL, first_name VARCHAR(48) NOT NULL, last_name VARCHAR(48) NOT NULL, academ_group VARCHAR(16), RFID INT UNSIGNED, approved BOOL DEFAULT FALSE)
-
+CREATE DATABASE aviators;
 USE aviators;
-CREATE TABLE tg_users (
-    tg_id INT UNSIGNED PRIMARY KEY NOT NULL,
-    tg_first_name VARCHAR(48) NOT NULL,
-    tg_last_name VARCHAR(48) NOT NULL,
-    username VARCHAR(48) NOT NULL,
-    FOREIGN KEY (tg_id) REFERENCES users(tg_id)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE
-    )
 
-USE aviators;
-CREATE TABLE kostyl (id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, def_loop BOOL);
-INSERT INTO kostyl (def_loop) VALUE (TRUE);
+CREATE TABLE tg_users
+(
+    tg_id         INT UNSIGNED PRIMARY KEY NOT NULL,
+    tg_first_name VARCHAR(48),
+    tg_last_name  VARCHAR(48),
+    username      VARCHAR(48)              NOT NULL,
+    approved      BOOL DEFAULT FALSE
+);
 
-SELECT LAST_INSERT_ID();
+CREATE TABLE users
+(
+    user_id      INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    tg_id        INT UNSIGNED NOT NULL,
+    FOREIGN KEY (tg_id) REFERENCES tg_users (tg_id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    first_name   VARCHAR(48)              NOT NULL,
+    last_name    VARCHAR(48)              NOT NULL,
+    academ_group VARCHAR(16),
+    RFID         INT UNSIGNED
+);
+
+CREATE TABLE door_log
+(
+    id          INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    user_id     INT UNSIGNED,
+    FOREIGN KEY (user_id) REFERENCES tg_users (tg_id),
+    door_status BOOL,
+    log_date    DATETIME
+);
+
+
+
+
 

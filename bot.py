@@ -4,6 +4,8 @@ from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceRepl
 from telegram.ext import Updater, CallbackContext, ConversationHandler, CallbackQueryHandler, MessageHandler, TypeHandler, CommandHandler, Filters
 from telegram_bot_pagination import InlineKeyboardPaginator
 
+from multiprocessing import Process
+
 TYPE, NAME, LAST_NAME, WELCOME, PREP = range(5)
 type_now = int
 user_type_markup = ReplyKeyboardMarkup([['Студент', 'Преподаватель']], resize_keyboard=True)
@@ -25,7 +27,7 @@ def feedback(update: Update, context: CallbackContext) -> None:
 def start(update, context: CallbackContext) -> int:
     global user
     user = update.effective_user.to_dict()
-    bd.insert_tg_user(user['id'], user['first_name'], user['last_name'], user['username'])
+    bd.insert_tg_user(user.get('id'), user.get('first_name'), user.get('last_name'), user.get('username'))
 
     text="Давай знакомиться. Кто ты?\n\n/start, чтобы начать заново.\n/cancel, чтобы выйти.\n/feedback, написать админу(сначала /cancel, чтобы выйти из настройки)."
     update.message.reply_text(text, reply_markup=user_type_markup)
@@ -56,7 +58,6 @@ def catch_user(update: Update, context: CallbackContext):
 def dump(update: Update, context: CallbackContext) -> None:
     context.bot.send_message(chat_id=update.effective_chat.id, text="Ещё не готово")
 
-#заменить на пагинацию
 def select(update, context):
     
     global user_pages
@@ -196,3 +197,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+    
