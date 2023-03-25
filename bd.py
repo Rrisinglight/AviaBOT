@@ -2,15 +2,15 @@ import mysql.connector
 from mysql.connector import Error
 
 
-def insert_tg_user(tg_id, tg_first_name, tg_last_name, username):
+def insert_tg_user(tg_id, chat_id, tg_first_name, tg_last_name, username):
     try:
         connection = mysql.connector.connect(host='localhost',
                                              database='aviators',
                                              user='user1',
                                              password='829')
         cursor = connection.cursor()
-        mySql_insert_query = f"""INSERT INTO tg_users (tg_id, tg_first_name, tg_last_name, username)
-        VALUES ({tg_id}, "{tg_first_name}", "{tg_last_name}", "{username}")
+        mySql_insert_query = f"""INSERT INTO tg_users (tg_id, chat_id, tg_first_name, tg_last_name, username)
+        VALUES ({tg_id}, {chat_id}, "{tg_first_name}", "{tg_last_name}", "{username}")
         ON DUPLICATE KEY UPDATE tg_first_name="{tg_first_name}", tg_last_name="{tg_last_name}", username="{username}" """
 
         cursor.execute(mySql_insert_query)
@@ -88,6 +88,7 @@ def in_table(RFID):
         cursor.execute(sql_select_query)
         # fetch result
         record = str(cursor.fetchall())
+        print(bool(int(record[2])))
         return(bool(int(record[2])))
 
     except mysql.connector.Error as error:
@@ -95,18 +96,41 @@ def in_table(RFID):
     finally:
         if connection.is_connected():
             connection.close()
-            
 
-def select():
+def if_appruved(RFID):
+    try:
+        connection = mysql.connector.connect(host='localhost',
+                                            database='aviators',
+                                            user='user1',
+                                            password='829')
+        cursor = connection.cursor()
+        if in_table(RFID) == True:
+            
+            sql_select_query = f"""SELECT tg_id FROM users WHERE RFID = '{RFID}'"""
+            cursor.execute(sql_select_query)
+            # fetch result
+            record = str(cursor.fetchall())
+            print(record)
+            return(True)
+        else:
+            return(False)
+
+    except mysql.connector.Error as error:
+        print("Не удалось проверить наличие в таблице: {}".format(error))
+    finally:
+        if connection.is_connected():
+            connection.close()
+
+def select(status):
     try:
         connection = mysql.connector.connect(host='localhost',
                                             database='aviators',
                                             user='user1',
                                             password='829')
 
-        sql_select_Query = """SELECT users.tg_id, tg_users.username, users.first_name, users.last_name, users.academ_group, tg_users.approved FROM users
+        sql_select_Query = f"""SELECT users.tg_id, tg_users.username, users.first_name, users.last_name, users.academ_group, tg_users.approved FROM users
                               JOIN tg_users ON tg_users.tg_id = users.tg_id
-                              WHERE approved = FALSE """
+                              WHERE approved = {status} """
         cursor = connection.cursor()
         cursor.execute(sql_select_Query)
         records = []
@@ -138,7 +162,7 @@ def approve(username, approve):
 
         cursor.execute(mySql_insert_query)
         connection.commit()
-        return("Пользователь успешно подтверждён")
+        return(f"Статус пользователя {username} изменён на {bool(approve)}")
 
     except mysql.connector.Error as error:
         return("Не удалось обновить запись в таблице: {}".format(error))
