@@ -5,6 +5,17 @@ from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceRepl
 from telegram.ext import Updater, CallbackContext, ConversationHandler, CallbackQueryHandler, MessageHandler, TypeHandler, CommandHandler, Filters
 from telegram_bot_pagination import InlineKeyboardPaginator
 
+import logging
+
+logging.basicConfig(level=logging.INFO, filename="py_log.log",filemode="w",
+                    format="%(asctime)s %(levelname)s %(message)s")
+logging.debug("A DEBUG Message")
+logging.info("An INFO")
+logging.warning("A WARNING")
+logging.error("An ERROR")
+logging.critical("A message of CRITICAL severity")
+
+
 NAME, LAST_NAME, WELCOME, KEY, FINAL = range(5)
 type_now = int
 user_type_markup = ReplyKeyboardMarkup([['Студент', 'Преподаватель']], resize_keyboard=True)
@@ -21,6 +32,13 @@ def echo(update: Update, context: CallbackContext) -> None:
 def cancel(update: Update, context: CallbackContext) -> None:
 
     update.message.reply_text('До встречи, авиатор!', reply_markup=ReplyKeyboardRemove())
+    print(user_data)
+
+    return ConversationHandler.END
+
+def cancel_main(update: Update, context: CallbackContext) -> None:
+
+    update.message.reply_text('Попробуйте написать команду /start', reply_markup=ReplyKeyboardRemove())
     print(user_data)
 
     return ConversationHandler.END
@@ -125,6 +143,8 @@ def main() -> None:
     updater.dispatcher.add_handler(MessageHandler(~Filters.chat(username="@risinglight") & Filters.chat_type.private & Filters.text(['Пиздец']), terminator))
     updater.dispatcher.add_handler(conv_handler)
     updater.dispatcher.add_handler(CommandHandler('feedback', feedback))
+    updater.dispatcher.add_handler(CommandHandler('cancel', cancel_main))
+    updater.dispatcher.add_handler(MessageHandler(Filters.text & ~(Filters.command), echo))
 
     updater.start_polling()
 

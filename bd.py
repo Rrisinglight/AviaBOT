@@ -97,7 +97,7 @@ def in_table(RFID):
         if connection.is_connected():
             connection.close()
 
-def if_appruved(RFID):
+def if_approved(RFID):
     try:
         connection = mysql.connector.connect(host='localhost',
                                             database='aviators',
@@ -108,10 +108,16 @@ def if_appruved(RFID):
             
             sql_select_query = f"""SELECT tg_id FROM users WHERE RFID = '{RFID}'"""
             cursor.execute(sql_select_query)
-            # fetch result
+            id = str(cursor.fetchone())
+            id = "".join(i for i in id if i.isdecimal())
+            
+            sql_select_query = f"""SELECT approved FROM tg_users WHERE tg_id = '{id}'"""
+            cursor.execute(sql_select_query)
             record = str(cursor.fetchall())
-            print(record)
-            return(True)
+            if bool(int(record[2])):
+                return(True)
+            else:
+                return(False)
         else:
             return(False)
 

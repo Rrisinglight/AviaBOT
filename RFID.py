@@ -4,31 +4,32 @@ import time
 from time import sleep
 import serial
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-
 def door(q):
+    
     while True:
-        PortRF = serial.Serial('/dev/ttyS0', 9600)
-        ID = ""
-        read_byte = (PortRF.read())
+        try:
+            PortRF = serial.Serial('/dev/ttyS0', 9600)
+            ID = ""
+            read_byte = (PortRF.read())
 
-        for Counter in range(12):
-            read_byte = (PortRF.read()).decode("utf-8")
-            ID = ID + str(read_byte)
+            for Counter in range(12):
+                read_byte = (PortRF.read()).decode("utf-8")
+                ID = ID + str(read_byte)
 
-        q.put(ID)
+            q.put(ID)
 
-        if bd.if_appruved(ID) == True:
-            action_open()
-            door_open()
-            print("door open")
-        else:
-            actions_error()
-            print("Нет доступа")
+            if bd.if_approved(ID) == True:
+                action_open()
+                door_open()
+                print("door open")
+            else:
+                action_error()
+                print("Нет доступа")
 
-        PortRF.close()
-        time.sleep(2)
+            PortRF.close()
+            time.sleep(2)
+        except Exception:
+            next
 
 def door_open():
     
@@ -75,6 +76,13 @@ def play(tones, melody, duration):
         t+=1
 
 def action_open():
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+    
+    GPIO.setup(BUZZER, GPIO.OUT)
+    GPIO.setup(RED, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(GREEN, GPIO.OUT, initial=GPIO.LOW)
+    
     GPIO.output(GREEN, GPIO.HIGH)
     play(tones, open_dour, open_dour_d)
     sleep(0.4)
@@ -82,6 +90,13 @@ def action_open():
     GPIO.cleanup()
 	
 def action_close():
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+    
+    GPIO.setup(BUZZER, GPIO.OUT)
+    GPIO.setup(RED, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(GREEN, GPIO.OUT, initial=GPIO.LOW)
+    
     GPIO.output(RED, GPIO.HIGH)
     play(tones, close_dour, close_d)
     GPIO.output(RED, GPIO.LOW)
@@ -96,6 +111,13 @@ def action_close():
     GPIO.cleanup()
 
 def action_error():
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+    
+    GPIO.setup(BUZZER, GPIO.OUT)
+    GPIO.setup(RED, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(GREEN, GPIO.OUT, initial=GPIO.LOW)
+    
     GPIO.output(RED, GPIO.HIGH)
     sleep(0.2)
     GPIO.output(RED, GPIO.LOW)
@@ -108,10 +130,6 @@ def action_error():
 BUZZER = 26
 GREEN = 13
 RED = 19
-
-GPIO.setup(BUZZER, GPIO.OUT)
-GPIO.setup(RED, GPIO.OUT, initial=GPIO.LOW)
-GPIO.setup(GREEN, GPIO.OUT, initial=GPIO.LOW)
 
 tones = {
     "B0": 31, "C1": 33, "CS1": 35, "D1": 37, "DS1": 39, "E1": 41, "F1": 
@@ -141,5 +159,5 @@ error_d = [0.4, 0.2, 0.3, 0.3]
 close_dour = ["C4", "C4", "C4", "C4"]
 close_d = [0.4, 0.4, 0.4, 0.5]
         
-play(tones, open_dour, open_dour_d)
-play(tones, error_code, error_d)
+#play(tones, open_dour, open_dour_d)
+#play(tones, error_code, error_d)
