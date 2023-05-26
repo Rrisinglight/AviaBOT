@@ -1,0 +1,12 @@
+2023-05-26 09:01:38,760 INFO An INFO
+2023-05-26 09:01:38,764 WARNING A WARNING
+2023-05-26 09:01:38,766 ERROR An ERROR
+2023-05-26 09:01:38,767 CRITICAL A message of CRITICAL severity
+2023-05-26 09:01:38,904 INFO Scheduler started
+2023-05-26 09:01:39,462 INFO Scheduler started
+2023-05-26 09:05:58,448 INFO Received signal 2 (SIGINT), stopping...
+2023-05-26 09:05:58,448 INFO Received signal 2 (SIGINT), stopping...
+2023-05-26 09:05:58,453 INFO Scheduler has been shut down
+2023-05-26 09:05:58,453 INFO Scheduler has been shut down
+2023-05-26 09:05:59,736 WARNING Exiting immediately!
+2023-05-26 09:05:59,736 WARNING Exiting immediately!

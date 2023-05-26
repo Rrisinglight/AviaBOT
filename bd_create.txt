@@ -1,0 +1,49 @@
+CREATE DATABASE aviators;
+USE aviators;
+
+CREATE TABLE tg_users
+(
+    tg_id         INT UNSIGNED PRIMARY KEY NOT NULL,
+    chat_id       INT UNSIGNED             NOT NULL,
+    tg_first_name VARCHAR(48),
+    tg_last_name  VARCHAR(48),
+    username      VARCHAR(48)              NOT NULL,
+    approved      BOOL DEFAULT FALSE
+);
+
+CREATE TABLE users
+(
+    tg_id      INT UNSIGNED NOT NULL PRIMARY KEY,
+    FOREIGN KEY (tg_id) REFERENCES tg_users (tg_id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    first_name   VARCHAR(48)  NOT NULL,
+    last_name    VARCHAR(48)  NOT NULL,
+    academ_group VARCHAR(16),
+    RFID         VARCHAR(64)
+);
+
+CREATE TABLE door_log
+(
+    id          INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    user_id     INT UNSIGNED,
+    FOREIGN KEY (user_id) REFERENCES tg_users (tg_id),
+    door_status BOOL,
+    log_date    DATETIME
+);
+
+INSERT INTO tg_users (tg_id, chat_id, tg_first_name, tg_last_name, username)
+VALUES (56465464, 12323423, 'Hermes', 'Ur1', 'Hermes228');
+INSERT INTO tg_users (tg_id, chat_id, tg_first_name, tg_last_name, username)
+VALUES (98794654, 234234234, 'Hizenberg', '1', 'Haiz');
+INSERT INTO tg_users (tg_id, chat_id, tg_first_name, tg_last_name, username)
+VALUES (35443556, 234234, 'Yomus', 'Maximus', 'Ymax');
+
+INSERT INTO users (tg_id, first_name, last_name, academ_group, RFID)
+VALUES (56465464, 'Anton', 'Zablikov', 'BPM-20-3', '987945656');
+INSERT INTO users (tg_id, first_name, last_name, academ_group, RFID)
+VALUES (98794654, 'Igor', 'Dmitrov', 'BPI-20-1', '21332132');
+INSERT INTO users (tg_id, first_name, last_name, academ_group, RFID)
+VALUES (35443556, 'Sasha', 'Yamich', 'BPLA-20-1', '897897');
+
+
