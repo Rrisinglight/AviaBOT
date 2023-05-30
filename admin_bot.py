@@ -1,4 +1,4 @@
-import bd
+import bd, RFID
 from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, InlineKeyboardButton
 from telegram.ext import Updater, CallbackContext, ConversationHandler, CallbackQueryHandler, MessageHandler, TypeHandler, CommandHandler, Filters
 from telegram_bot_pagination import InlineKeyboardPaginator
@@ -67,7 +67,6 @@ def select(update, context):
         )
     except IndexError:
         next
-
 
 def characters_page_callback(update, context):
     

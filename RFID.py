@@ -1,6 +1,5 @@
 import bd
 import RPi.GPIO as GPIO
-import time
 from time import sleep
 import serial
 from threading import Thread
@@ -8,30 +7,16 @@ from threading import Thread
 def door_open():
     GPIO.output(6, GPIO.LOW)
     action_open()
-    time.sleep(2)
-    GPIO.output(6, GPIO.HIGH)
-
-def exit_door():
-    return()
-
-# def terminated_door():
-    
-#     GPIO.setup(6, GPIO.OUT)
-    
-#     try:
-#         GPIO.output(6, GPIO.LOW)
-#     except KeyboardInterrupt:
-#         print("Stopped")
-        
+    sleep(2)
 
 def buzz(noteFreq, duration):
     halveWaveTime = 1 / (noteFreq * 2 )
     waves = int(duration * noteFreq)
     for i in range(waves):
        GPIO.output(BUZZER, True)
-       time.sleep(halveWaveTime)
+       sleep(halveWaveTime)
        GPIO.output(BUZZER, False)
-       time.sleep(halveWaveTime)
+       sleep(halveWaveTime)
 
 def play(tones, melody, duration, COLOR):
     t=0
@@ -39,12 +24,11 @@ def play(tones, melody, duration, COLOR):
     GPIO.output(COLOR, TOGGLE)
     for i in melody:
         buzz(tones[i], duration[t])
-        time.sleep(duration[t] *0.1)
+        sleep(duration[t] *0.1)
         if TOGGLE == GPIO.HIGH: TOGGLE = GPIO.LOW
         else: TOGGLE = GPIO.HIGH
         GPIO.output(COLOR, TOGGLE)
         t+=1
-
 
 def action_open():
     play(tones, open_dour, open_dour_d, GREEN)
@@ -78,7 +62,6 @@ def action_key():
     GPIO.output(GREEN, GPIO.LOW)
 
 def door(q):
-
     while True:
         try:
             PortRF = serial.Serial('/dev/ttyS0', 9600)
@@ -89,32 +72,29 @@ def door(q):
                 read_byte = (PortRF.read()).decode("utf-8")
                 ID = ID + str(read_byte)
 
-            q.put(ID)
+            q.put(ID, block=False)
 
-            if signal == False:
-                if bd.if_approved(ID) == True:
-                    door_open()
-                    print("door open")
-                else:
-                    action_error()
-                    print("Нет доступа")
+            if bd.if_approved(ID) == True:
+                door_open()
+                GPIO.output(6, GPIO.HIGH)
+                print("door open")
+            else:
+                action_error()
+                print("Нет доступа")
 
             PortRF.close()
-
         except Exception:
             next
-        time.sleep(1)
-
 
 def push_button():
     while True:
         if GPIO.input(21) == GPIO.HIGH:
-            door_open()
             print("Button was pushed!")
-        time.sleep(2)
-
-global signal
-signal = False
+            GPIO.output(6, GPIO.LOW)
+            #action_open()
+            sleep(2)
+            GPIO.output(6, GPIO.HIGH)
+        sleep(0.5)
 
 BUZZER = 26
 GREEN = 19

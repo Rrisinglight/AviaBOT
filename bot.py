@@ -17,15 +17,10 @@ logging.error("An ERROR")
 logging.critical("A message of CRITICAL severity")
 
 
-NAME, LAST_NAME, WELCOME, KEY, FINAL = range(5)
+NAME, LAST_NAME, WELCOME = range(3)
 type_now = int
 user_type_markup = ReplyKeyboardMarkup([['Студент', 'Преподаватель']], resize_keyboard=True)
 user_data = []
-
-
-def terminator():
-    door_tred.terminate()
-    RFID.terminated_door()
 
 def echo(update: Update, context: CallbackContext) -> None:
     context.bot.send_message(chat_id=update.effective_chat.id, text="А?")
@@ -45,7 +40,7 @@ def cancel_main(update: Update, context: CallbackContext) -> None:
     return ConversationHandler.END
 
 def feedback(update: Update, context: CallbackContext) -> None:
-    context.bot.send_contact(chat_id = 593344137, phone_number = '+7 905 420 0216', first_name = 'Алексей', last_name = 'Рычагов')
+    context.bot.send_contact(chat_id = 593344137, phone_number = '+7 905 420-02-16', first_name = 'Алексей', last_name = 'Рычагов')
 
 def start(update, context: CallbackContext) -> int:
     global user
@@ -87,40 +82,27 @@ def welcome(update: Update, context: CallbackContext) -> int:
         return ConversationHandler.END
 
 
-def key(update: Update, context: CallbackContext) -> int:
+def key(update: Update, context: CallbackContext) -> None:
     context.bot.send_message(chat_id=update.effective_chat.id, text="Приложите карту к считывателю")
-    RFID.signal = True
 
     size = q.qsize()
     RFID.action_key()
-    
+
     if q.qsize() == size:
         context.bot.send_message(chat_id=update.effective_chat.id, text="Вы не поднесли карту")
+        return ConversationHandler.END
     else:
         card = q.get()
         if bd.in_table(card) == True:
             context.bot.send_message(chat_id=update.effective_chat.id, text="Ключ уже зарегистрирован в системе")
+            return ConversationHandler.END
         else:
             bd.insert_key(user['id'], card)
             context.bot.send_message(chat_id=update.effective_chat.id, text="Ключ успешно записан: " + str(card))
-            return FINAL
-        
-    RFID.signal = False
-
-def final(update: Update, context: CallbackContext) -> None:
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Осталось дождаться подтверждения от преподавателя.\nНапиши ему @eugerhan, чтобы он скорее дал тебе доступ в мастерскую")
-    return ConversationHandler.END
+            context.bot.send_message(chat_id=update.effective_chat.id, text="Осталось дождаться подтверждения от преподавателя.\nНапиши @eugerhan, чтобы он скорее дал тебе доступ в мастерскую")
+            return ConversationHandler.END
 
 def main() -> None:
-    global q
-    global door_tred
-    q = Queue()
-    button_tred = Thread(target=RFID.push_button)
-    door_tred = Thread(name='door', target=RFID.door, args=(q,))
-    admin_tred = Process(name='admin', target=admin_bot.main)
-    admin_tred.start()
-    door_tred.start()
-    button_tred.start()
 
     updater = Updater("5838936536:AAHWgfvpzUMWoUzsP37X2xZNrDSvlWxbizc")
 
@@ -136,18 +118,11 @@ def main() -> None:
             WELCOME: [
                 MessageHandler(Filters.text & ~(Filters.command), welcome),
                 CommandHandler('key', key)
-            ],
-            KEY: [
-                MessageHandler(Filters.text & ~(Filters.command), key),
-            ],
-            FINAL: [
-                MessageHandler(Filters.text & ~(Filters.command), final),
             ]
         },
         fallbacks = [CommandHandler('cancel', cancel)],
     )
 
-    updater.dispatcher.add_handler(MessageHandler(~Filters.chat(username="@risinglight") & Filters.chat_type.private & Filters.text(['Пиздец']), terminator))
     updater.dispatcher.add_handler(conv_handler)
     updater.dispatcher.add_handler(CommandHandler('feedback', feedback))
     updater.dispatcher.add_handler(CommandHandler('cancel', cancel_main))
@@ -161,5 +136,13 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    global q
+    global door_tred, lock
+    q = Queue()
+    button_tred = Thread(name='button', target=RFID.push_button, daemon=True)
+    door_tred = Thread(name='door', target=RFID.door, args=(q,), daemon=True)
+    admin_tred = Process(name='admin', target=admin_bot.main)
+    admin_tred.start()
+    door_tred.start()
+    button_tred.start()
     main()
-    
