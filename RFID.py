@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import bd
 import RPi.GPIO as GPIO
 from time import sleep
@@ -5,9 +6,10 @@ import serial
 from threading import Thread
 
 def door_open():
-    GPIO.output(6, GPIO.LOW)
+    GPIO.output(16, GPIO.LOW)
     action_open()
     sleep(2)
+    GPIO.output(16, GPIO.HIGH)
 
 def buzz(noteFreq, duration):
     halveWaveTime = 1 / (noteFreq * 2 )
@@ -48,16 +50,25 @@ def action_error():
     sleep(0.1)
     GPIO.output(RED, GPIO.LOW)
 
+def action_blink():
+    while True:
+        if signal == False:
+            play(tones, blink_code, blink_d, GREEN)
+            GPIO.output(GREEN, GPIO.LOW)
+            GPIO.output(RED, GPIO.HIGH)
+            sleep(0.15)
+            GPIO.output(RED, GPIO.LOW)
+        sleep(16)
+
 def action_key():
-    for i in range(6):
-        GPIO.output(RED, GPIO.HIGH)
-        GPIO.output(GREEN, GPIO.LOW)
-        buzz(1109, 0.2)
-        sleep(0.8)
-        GPIO.output(RED, GPIO.LOW)
-        GPIO.output(GREEN, GPIO.HIGH)
-        buzz(78, 0.2)
-        sleep(0.9)
+    GPIO.output(RED, GPIO.HIGH)
+    GPIO.output(GREEN, GPIO.LOW)
+    buzz(1109, 0.2)
+    sleep(0.8)
+    GPIO.output(RED, GPIO.LOW)
+    GPIO.output(GREEN, GPIO.HIGH)
+    buzz(78, 0.2)
+    sleep(0.9)
     GPIO.output(RED, GPIO.LOW)
     GPIO.output(GREEN, GPIO.LOW)
 
@@ -66,21 +77,23 @@ def door(q):
         try:
             PortRF = serial.Serial('/dev/ttyS0', 9600)
             ID = ""
-            read_byte = (PortRF.read())
+            read_byte = PortRF.read()
 
             for Counter in range(12):
                 read_byte = (PortRF.read()).decode("utf-8")
                 ID = ID + str(read_byte)
 
-            q.put(ID, block=False)
+            q.put(ID)
 
-            if bd.if_approved(ID) == True:
-                door_open()
-                GPIO.output(6, GPIO.HIGH)
-                print("door open")
-            else:
-                action_error()
-                print("Нет доступа")
+            if signal == False:
+                if bd.if_approved(ID) == True:
+                    user = bd.check_id(ID)
+                    bd.insert_info(user[0], user[1], 'Дверь открыта ключом')
+                    door_open()
+                else:
+                    bd.insert_small_info(f'Неизвестный ключ: {ID}')
+                    action_error()
+
 
             PortRF.close()
         except Exception:
@@ -89,16 +102,16 @@ def door(q):
 def push_button():
     while True:
         if GPIO.input(21) == GPIO.HIGH:
-            print("Button was pushed!")
-            GPIO.output(6, GPIO.LOW)
-            #action_open()
-            sleep(2)
-            GPIO.output(6, GPIO.HIGH)
+            door_open()
+            bd.insert_small_info('Дверь открыта кнопкой')
         sleep(0.5)
 
 BUZZER = 26
 GREEN = 19
 RED = 13
+
+global signal
+signal = False
 
 tones = {
     "B0": 31, "C1": 33, "CS1": 35, "D1": 37, "DS1": 39, "E1": 41, "F1": 
@@ -128,10 +141,13 @@ error_d = [0.4, 0.2, 0.3, 0.3]
 close_dour = ["C4", "C4", "C4", "C4"]
 close_d = [0.4, 0.4, 0.4, 0.5]
 
+blink_code = ["E6", "F6", "E6"]
+blink_d = [0.1, 0.1, 0.1]
+
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-GPIO.setup(6, GPIO.OUT, initial=GPIO.HIGH)
+GPIO.setup(16, GPIO.OUT, initial=GPIO.HIGH)
 GPIO.setup(21, GPIO.IN)
 GPIO.setup(26, GPIO.OUT)
 GPIO.setup(13, GPIO.OUT, initial=GPIO.LOW)
@@ -141,4 +157,4 @@ GPIO.setup(19, GPIO.OUT, initial=GPIO.LOW)
 # action_close()
 # action_error()
 
-
+    

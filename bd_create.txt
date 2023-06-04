@@ -17,9 +17,10 @@ CREATE TABLE users
     FOREIGN KEY (tg_id) REFERENCES tg_users (tg_id)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
-    first_name   VARCHAR(48)  NOT NULL,
-    last_name    VARCHAR(48)  NOT NULL,
-    academ_group VARCHAR(16),
+    first_name   VARCHAR(48) DEFAULT 'None',
+    last_name    VARCHAR(48) DEFAULT 'None',
+    academ_group VARCHAR(16) DEFAULT 'None',
+    student_type VARCHAR(24) DEFAULT 'None',
     RFID         VARCHAR(64)
 );
 
@@ -27,23 +28,39 @@ CREATE TABLE door_log
 (
     id          INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_id     INT UNSIGNED,
+    username VARCHAR(48),
     FOREIGN KEY (user_id) REFERENCES tg_users (tg_id),
-    door_status BOOL,
-    log_date    DATETIME
+    door_status VARCHAR(256),
+    create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 INSERT INTO tg_users (tg_id, chat_id, tg_first_name, tg_last_name, username)
-VALUES (56465464, 12323423, 'Hermes', 'Ur1', 'Hermes228');
+VALUES (400349818, 400349818, 'Daniil', 'Muravlev', 'Daniil058');
 INSERT INTO tg_users (tg_id, chat_id, tg_first_name, tg_last_name, username)
-VALUES (98794654, 234234234, 'Hizenberg', '1', 'Haiz');
+VALUES (317612639, 317612639, 'Eugene', 'Erhan', 'eugerhan');
 INSERT INTO tg_users (tg_id, chat_id, tg_first_name, tg_last_name, username)
-VALUES (35443556, 234234, 'Yomus', 'Maximus', 'Ymax');
+VALUES (667770847, 667770847, 'Елизавета', 'None', 'eilisse');
 
 INSERT INTO users (tg_id, first_name, last_name, academ_group, RFID)
-VALUES (56465464, 'Anton', 'Zablikov', 'BPM-20-3', '987945656');
+VALUES (400349818, 'Даниил', 'Муравлев', '?', '0300321985AD');
 INSERT INTO users (tg_id, first_name, last_name, academ_group, RFID)
-VALUES (98794654, 'Igor', 'Dmitrov', 'BPI-20-1', '21332132');
+VALUES (317612639, 'Евгений', 'Ерхан', 'Нет', '670096F6797E');
 INSERT INTO users (tg_id, first_name, last_name, academ_group, RFID)
-VALUES (35443556, 'Sasha', 'Yamich', 'BPLA-20-1', '897897');
+VALUES (667770847, 'Елизавета', 'Семенина', 'БИВТ-20-3', NULL);
 
 
+
+//////
+
+INSERT INTO door_log (user_id, door_status) VALUES (317612639, DATE_SUB(CURRENT_TIMESTAMP(), INTERVAL 30 MINUTE));
+
+INSERT INTO tg_users (tg_id, chat_id, tg_first_name, tg_last_name, username)
+VALUES (0, 0, 'unknown user', 'unknown user', 'unknown user');
+INSERT INTO users (tg_id, first_name, last_name, academ_group, RFID)
+VALUES (0, 'unknown user', 'unknown user', 'unknown user', '0');
+
+sql_select_query = f"""SELECT door_log.593344137 FROM tg_users JOIN door_log ON tg_users.approved = FALSE WHERE door_log.create_at > DATE_SUB(CURRENT_TIMESTAMP(), INTERVAL 1 HOUR)"""
+SELECT 317612639 FROM door_log WHERE create_at < DATE_SUB(CURRENT_TIMESTAMP(), INTERVAL 1 HOUR);
+
+
+SELECT * FROM door_log.user_id = 593344137 JOIN tg_users.approved = FALSE;

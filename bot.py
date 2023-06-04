@@ -1,15 +1,16 @@
-import bd, RFID, admin_bot, mysql.connector, threading, time
+#!/usr/bin/python3
+import mysql.connector
+import datetime
+import bd, RFID, admin_bot, threading, time
 from threading import Thread
 from multiprocessing import Process, Queue
-from mysql.connector import Error
-from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, InlineKeyboardButton
+from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CallbackContext, ConversationHandler, CallbackQueryHandler, MessageHandler, TypeHandler, CommandHandler, Filters
 from telegram_bot_pagination import InlineKeyboardPaginator
 
 import logging
 
-logging.basicConfig(level=logging.INFO, filename="py_log.log",filemode="w",
-                    format="%(asctime)s %(levelname)s %(message)s")
+logging.basicConfig(level=logging.INFO, filename="py_log.log",filemode="w", format="%(asctime)s %(levelname)s %(message)s")
 logging.debug("A DEBUG Message")
 logging.info("An INFO")
 logging.warning("A WARNING")
@@ -17,10 +18,10 @@ logging.error("An ERROR")
 logging.critical("A message of CRITICAL severity")
 
 
-NAME, LAST_NAME, WELCOME = range(3)
+NAME, LAST_NAME, STUD_TYPE, BUTTON, WELCOME = range(5)
 type_now = int
 user_type_markup = ReplyKeyboardMarkup([['Студент', 'Преподаватель']], resize_keyboard=True)
-user_data = []
+
 
 def echo(update: Update, context: CallbackContext) -> None:
     context.bot.send_message(chat_id=update.effective_chat.id, text="А?")
@@ -28,78 +29,144 @@ def echo(update: Update, context: CallbackContext) -> None:
 def cancel(update: Update, context: CallbackContext) -> None:
 
     update.message.reply_text('До встречи, авиатор!', reply_markup=ReplyKeyboardRemove())
-    print(user_data)
 
     return ConversationHandler.END
 
 def cancel_main(update: Update, context: CallbackContext) -> None:
 
     update.message.reply_text('Попробуйте написать команду /start', reply_markup=ReplyKeyboardRemove())
-    print(user_data)
 
     return ConversationHandler.END
 
 def feedback(update: Update, context: CallbackContext) -> None:
-    context.bot.send_contact(chat_id = 593344137, phone_number = '+7 905 420-02-16', first_name = 'Алексей', last_name = 'Рычагов')
+    context.bot.send_contact(chat_id=update.effective_chat.id, phone_number='+7 905 420-02-16', first_name='Алексей', last_name='Рычагов')
 
 def start(update, context: CallbackContext) -> int:
-    global user
-    user = update.effective_user.to_dict()
 
+    user = update.effective_user.to_dict()
     bd.insert_tg_user(user.get('id'), update.effective_chat.id, user.get('first_name'), user.get('last_name'), user.get('username'))
 
-    start_text="Привет! Давай знакомиться. Кто ты?\n\n/start, чтобы начать заново.\n/cancel, чтобы выйти.\n/feedback, написать админу(сначала /cancel, чтобы выйти из настроек)."
+    start_text="Привет! Давай знакомиться. Кто ты?\n\n/start, чтобы начать заново.\n/cancel, чтобы выйти из настройки.\n/feedback, написать админу(сначала /cancel, чтобы выйти из настроек)."
     context.bot.send_message(chat_id=update.effective_chat.id, text = start_text)
-    context.bot.send_message(chat_id=update.effective_chat.id, text='Введи имя', reply_markup=ForceReply())
+    context.bot.send_message(chat_id=update.effective_chat.id, text='Введи имя:', reply_markup=ForceReply())
 
     return NAME
 
 def last_name(update: Update, context: CallbackContext) -> int:
     
-    user_data.append(update.message.text)
-    context.bot.send_message(chat_id=update.effective_chat.id, text='Введи фамилию', reply_markup=ForceReply())
+    first_name = str(update.message.text)
+    if (first_name.isalpha() == True) and (len(first_name) <= 48):
+        result = bd.insert_name(update.effective_chat.id, first_name)
+        if result == 'Запись успешно вставлена в таблицу пользователей':
+            context.bot.send_message(chat_id=update.effective_chat.id, text='Введи фамилию:', reply_markup=ForceReply())
+            return LAST_NAME
+        else:
+            context.bot.send_message(chat_id=update.effective_chat.id, text='\nКажется что-то пошло не так, попробуй перезапустить бота командой /start и проверить данные!')
+            return ConversationHandler.END
+    else:
+        context.bot.send_message(chat_id=update.effective_chat.id, text='Пожалуйста, ограничьтесь алфавитными символами')
+        return NAME
 
-    return LAST_NAME
+def stud_type(update: Update, context: CallbackContext) -> int:
+
+    last_name = str(update.message.text)
+
+    if (last_name.isalpha() == True) and (len(last_name) <= 48):
+        result = bd.insert_last_name(update.effective_chat.id, last_name)
+        if result == 'Запись успешно вставлена в таблицу пользователей':
+
+            keyboard = [
+                [
+                    InlineKeyboardButton("Студент", callback_data='Студент'),
+                    InlineKeyboardButton("Пром.дизайнер", callback_data='Пром.дизайнер'),
+                ],
+                [InlineKeyboardButton("Авиамоделист", callback_data='Авиамоделист')],
+            ]
+            reply_markup = InlineKeyboardMarkup(keyboard)
+            update.message.reply_text('Пожалуйста, выберите:', reply_markup=reply_markup)
+
+            return STUD_TYPE
+        else:
+            context.bot.send_message(chat_id=update.effective_chat.id, text='\nКажется что-то пошло не так, попробуй перезапустить бота командой /start и проверить данные!')
+            return ConversationHandler.END
+    else:
+        context.bot.send_message(chat_id=update.effective_chat.id, text='Пожалуйста, ограничься алфавитными символами')
+        return LAST_NAME
+
+def button(update: Update, context: CallbackContext) -> int:
+    query = update.callback_query
+    variant = query.data
+
+    query.answer()
+
+    query.edit_message_text(text=f"Выбранный вариант: {variant}")
+    bd.insert_stud_type(update.effective_chat.id, variant)
+    context.bot.send_message(chat_id=update.effective_chat.id, text='Введи номер академической группы:', reply_markup=ForceReply())
+    return WELCOME
 
 def group(update: Update, context: CallbackContext) -> int:
 
-    user_data.append(update.message.text)
-    context.bot.send_message(chat_id=update.effective_chat.id, text='Введи номер академической группы', reply_markup=ForceReply())
+    last_name = str(update.message.text)
 
-    return WELCOME
+    if (last_name.isalpha() == True) and (len(last_name) <= 48):
+        result = bd.insert_last_name(update.effective_chat.id, last_name)
+        if result == 'Запись успешно вставлена в таблицу пользователей':
+            context.bot.send_message(chat_id=update.effective_chat.id, text='Введи номер академической группы:', reply_markup=ForceReply())
+            return WELCOME
+        else:
+            context.bot.send_message(chat_id=update.effective_chat.id, text='\nКажется что-то пошло не так, попробуй перезапустить бота командой /start и проверить данные!')
+            return ConversationHandler.END
+    else:
+        context.bot.send_message(chat_id=update.effective_chat.id, text='Пожалуйста, ограничься алфавитными символами', reply_markup=ForceReply())
+        return LAST_NAME
+    
 
 def welcome(update: Update, context: CallbackContext) -> int:
 
-    user_data.append(update.message.text)
-    result = bd.insert_varibles_into_table(user['id'], user_data[0], user_data[1], user_data[2])
-
-    if result == 'Запись успешно вставлена в таблицу пользователей':
-        text = str(user_data[0]) + ", добро пожаловать в наш авиаклуб, чтобы получить доступ в мастерскую тебе необходимо прислонить свой пропуск к считывателю у двери кабинета Л829. Как будешь готов, напиши команду /key"
-        update.message.reply_text(text)
-        return WELCOME
+    group = str(update.message.text)
+    bd.insert_info(update.effective_chat.id, update.effective_chat.username, 'Обновил данные')
+    if bd.ddos_check(update.effective_chat.id) <= 3:
+        if len(group) <= 16:
+            result = bd.insert_group(update.effective_chat.id, group)
+            text = result + ", добро пожаловать в наш авиаклуб, чтобы получить доступ в мастерскую тебе необходимо прислонить свой пропуск к считывателю у двери кабинета Л829. Как будешь готов, напиши команду /key"
+            update.message.reply_text(text)
+            return WELCOME
+        else:
+            context.bot.send_message(chat_id=update.effective_chat.id, text='\nГруппа введена некорректно, попробуй проверить данные и перезапустить бота командой /start')
+            return ConversationHandler.END
     else:
-        context.bot.send_message(chat_id=update.effective_chat.id, text=result+'\nКажется что-то пошло не так, попробуй перезапустить бота командой /start и проверить данные!')
+        context.bot.send_message(chat_id=update.effective_chat.id, text='\nПревышено число регистраций, попробуй снова через час.')
         return ConversationHandler.END
-
-
+    
 def key(update: Update, context: CallbackContext) -> None:
     context.bot.send_message(chat_id=update.effective_chat.id, text="Приложите карту к считывателю")
 
     size = q.qsize()
-    RFID.action_key()
+
+    RFID.signal = True
+    for i in range(12):
+        if q.qsize() == size:
+            RFID.action_key()
+        else:
+            time.sleep(1)
+            break
+    RFID.signal = False
 
     if q.qsize() == size:
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Вы не поднесли карту")
+        context.bot.send_message(chat_id=update.effective_chat.id, text="\nВы не поднесли карту, пожалуйста, пройдите регистрацистрацию заново и поднесите карту, после использования команды /key")
         return ConversationHandler.END
     else:
         card = q.get()
+        while q.empty() != True:
+            q.get()
         if bd.in_table(card) == True:
             context.bot.send_message(chat_id=update.effective_chat.id, text="Ключ уже зарегистрирован в системе")
             return ConversationHandler.END
         else:
-            bd.insert_key(user['id'], card)
+            bd.insert_key(update.effective_chat.id, card)
             context.bot.send_message(chat_id=update.effective_chat.id, text="Ключ успешно записан: " + str(card))
-            context.bot.send_message(chat_id=update.effective_chat.id, text="Осталось дождаться подтверждения от преподавателя.\nНапиши @eugerhan, чтобы он скорее дал тебе доступ в мастерскую")
+            context.bot.send_message(chat_id=update.effective_chat.id, text="Осталось дождаться подтверждения от преподавателя.\nНапиши @eugerhan, если уже долго ждёшь подтверждения.")
+            bd.insert_info(update.effective_chat.id, update.effective_chat.username, 'Привязал новый ключ')
             return ConversationHandler.END
 
 def main() -> None:
@@ -113,6 +180,14 @@ def main() -> None:
                 MessageHandler(Filters.text & ~(Filters.command), last_name),
             ],
             LAST_NAME: [
+                MessageHandler(Filters.text & ~(Filters.command), stud_type)
+            ],
+            STUD_TYPE: [
+                CallbackQueryHandler(button, pattern='^' + 'Студент' + '$'),
+                CallbackQueryHandler(button, pattern='^' + 'Пром.дизайнер' + '$'),
+                CallbackQueryHandler(button, pattern='^' + 'Авиамоделист' + '$')
+            ],
+            BUTTON: [
                 MessageHandler(Filters.text & ~(Filters.command), group),
             ],
             WELCOME: [
@@ -137,12 +212,13 @@ def main() -> None:
 
 if __name__ == "__main__":
     global q
-    global door_tred, lock
     q = Queue()
     button_tred = Thread(name='button', target=RFID.push_button, daemon=True)
-    door_tred = Thread(name='door', target=RFID.door, args=(q,), daemon=True)
+    blink_tred = Thread(name='blink', target=RFID.action_blink, daemon=True)
+    door_tred = Thread(name='door', target=RFID.door, args=(q,))
     admin_tred = Process(name='admin', target=admin_bot.main)
     admin_tred.start()
     door_tred.start()
     button_tred.start()
+    blink_tred.start()
     main()

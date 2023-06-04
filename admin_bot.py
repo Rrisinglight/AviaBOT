@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import bd, RFID
 from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, InlineKeyboardButton
 from telegram.ext import Updater, CallbackContext, ConversationHandler, CallbackQueryHandler, MessageHandler, TypeHandler, CommandHandler, Filters
@@ -97,7 +98,7 @@ def main() -> None:
 
     updater = Updater("5904027140:AAFQpjwABvsmMjwQjX9rP7XUB8z4QtxgbsE")
 
-    updater.dispatcher.add_handler(MessageHandler(~Filters.chat(username="@risinglight") & Filters.chat_type.private, prohibit))
+    updater.dispatcher.add_handler(MessageHandler(~Filters.chat(username="@eugerhan") & Filters.chat_type.private, prohibit))
     updater.dispatcher.add_handler(CommandHandler('start', start))
 
     updater.dispatcher.add_handler(MessageHandler(Filters.text(['Список студентов ожидающих подтверждения']), select))
