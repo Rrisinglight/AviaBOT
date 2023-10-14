@@ -1,6 +1,531 @@
-2023-06-04 21:02:57,421 INFO An INFO
-2023-06-04 21:02:57,425 WARNING A WARNING
-2023-06-04 21:02:57,427 ERROR An ERROR
-2023-06-04 21:02:57,428 CRITICAL A message of CRITICAL severity
-2023-06-04 21:02:57,576 INFO Scheduler started
-2023-06-04 21:02:58,317 INFO Scheduler started
+2023-10-12 17:33:19,808 INFO Received signal 15 (SIGTERM), stopping...
+2023-10-12 17:33:19,810 INFO Scheduler has been shut down
+2023-10-12 17:33:19,815 INFO Received signal 15 (SIGTERM), stopping...
+2023-10-12 17:33:19,817 INFO Scheduler has been shut down
+2023-10-12 17:36:51,950 INFO An INFO
+2023-10-12 17:36:51,954 WARNING A WARNING
+2023-10-12 17:36:51,956 ERROR An ERROR
+2023-10-12 17:36:51,957 CRITICAL A message of CRITICAL severity
+2023-10-12 17:36:52,104 INFO Scheduler started
+2023-10-12 17:36:52,628 INFO Scheduler started
+2023-10-12 17:37:35,642 INFO An INFO
+2023-10-12 17:37:35,646 WARNING A WARNING
+2023-10-12 17:37:35,648 ERROR An ERROR
+2023-10-12 17:37:35,649 CRITICAL A message of CRITICAL severity
+2023-10-12 17:37:35,794 INFO Scheduler started
+2023-10-12 17:37:36,251 INFO Scheduler started
+2023-10-12 17:45:15,993 INFO An INFO
+2023-10-12 17:45:15,997 WARNING A WARNING
+2023-10-12 17:45:15,998 ERROR An ERROR
+2023-10-12 17:45:16,000 CRITICAL A message of CRITICAL severity
+2023-10-12 17:45:16,136 INFO Scheduler started
+2023-10-12 17:45:16,681 INFO Scheduler started
+2023-10-12 17:45:35,313 INFO An INFO
+2023-10-12 17:45:35,318 WARNING A WARNING
+2023-10-12 17:45:35,319 ERROR An ERROR
+2023-10-12 17:45:35,321 CRITICAL A message of CRITICAL severity
+2023-10-12 17:45:35,475 INFO Scheduler started
+2023-10-12 17:45:36,292 INFO Scheduler started
+2023-10-12 18:55:26,108 INFO An INFO
+2023-10-12 18:55:26,108 WARNING A WARNING
+2023-10-12 18:55:26,109 ERROR An ERROR
+2023-10-12 18:55:26,110 CRITICAL A message of CRITICAL severity
+2023-10-12 18:55:26,149 INFO Scheduler started
+2023-10-12 18:55:26,150 INFO Scheduler started
+2023-10-12 21:17:30,480 INFO An INFO
+2023-10-12 21:17:30,481 WARNING A WARNING
+2023-10-12 21:17:30,482 ERROR An ERROR
+2023-10-12 21:17:30,482 CRITICAL A message of CRITICAL severity
+2023-10-12 21:17:30,526 INFO Scheduler started
+2023-10-12 21:17:30,530 INFO Scheduler started
+2023-10-13 04:10:20,296 INFO Flood control exceeded. Retry in 5.0 seconds
+2023-10-13 04:10:27,816 ERROR Error while getting Updates: Bad Gateway
+2023-10-13 04:10:27,817 ERROR No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/updater.py", line 651, in _network_loop_retry
+    if not action_cb():
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/updater.py", line 602, in polling_action_cb
+    updates = self.bot.get_updates(
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/extbot.py", line 228, in get_updates
+    updates = super().get_updates(
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/bot.py", line 134, in decorator
+    result = func(*args, **kwargs)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/bot.py", line 3140, in get_updates
+    self._post(
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/bot.py", line 299, in _post
+    return self.request.post(
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/utils/request.py", line 361, in post
+    result = self._request_wrapper(
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/utils/request.py", line 290, in _request_wrapper
+    raise NetworkError('Bad Gateway')
+telegram.error.NetworkError: Bad Gateway
+2023-10-13 15:00:02,003 INFO Received signal 15 (SIGTERM), stopping...
+2023-10-13 15:00:02,004 INFO Scheduler has been shut down
+2023-10-13 15:00:02,002 INFO Received signal 15 (SIGTERM), stopping...
+2023-10-13 15:00:02,006 INFO Scheduler has been shut down
+2023-10-13 15:01:47,807 INFO An INFO
+2023-10-13 15:01:47,809 WARNING A WARNING
+2023-10-13 15:01:47,810 ERROR An ERROR
+2023-10-13 15:01:47,810 CRITICAL A message of CRITICAL severity
+2023-10-13 15:01:47,871 INFO Scheduler started
+2023-10-13 15:01:47,886 INFO Scheduler started
+2023-10-14 01:34:35,764 INFO Flood control exceeded. Retry in 5.0 seconds
+2023-10-14 01:34:36,974 ERROR Error while getting Updates: Bad Gateway
+2023-10-14 01:34:36,975 ERROR No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/updater.py", line 651, in _network_loop_retry
+    if not action_cb():
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/updater.py", line 602, in polling_action_cb
+    updates = self.bot.get_updates(
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/extbot.py", line 228, in get_updates
+    updates = super().get_updates(
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/bot.py", line 134, in decorator
+    result = func(*args, **kwargs)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/bot.py", line 3140, in get_updates
+    self._post(
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/bot.py", line 299, in _post
+    return self.request.post(
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/utils/request.py", line 361, in post
+    result = self._request_wrapper(
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/utils/request.py", line 290, in _request_wrapper
+    raise NetworkError('Bad Gateway')
+telegram.error.NetworkError: Bad Gateway
+2023-10-14 01:34:41,324 ERROR Error while getting Updates: Bad Gateway
+2023-10-14 01:34:41,326 ERROR No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/updater.py", line 651, in _network_loop_retry
+    if not action_cb():
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/updater.py", line 602, in polling_action_cb
+    updates = self.bot.get_updates(
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/extbot.py", line 228, in get_updates
+    updates = super().get_updates(
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/bot.py", line 134, in decorator
+    result = func(*args, **kwargs)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/bot.py", line 3140, in get_updates
+    self._post(
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/bot.py", line 299, in _post
+    return self.request.post(
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/utils/request.py", line 361, in post
+    result = self._request_wrapper(
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/utils/request.py", line 290, in _request_wrapper
+    raise NetworkError('Bad Gateway')
+telegram.error.NetworkError: Bad Gateway
+2023-10-14 15:00:01,365 INFO Received signal 15 (SIGTERM), stopping...
+2023-10-14 15:00:01,368 INFO Scheduler has been shut down
+2023-10-14 15:00:01,369 INFO Received signal 15 (SIGTERM), stopping...
+2023-10-14 15:00:01,370 INFO Scheduler has been shut down
+2023-10-14 15:01:47,741 INFO An INFO
+2023-10-14 15:01:47,743 WARNING A WARNING
+2023-10-14 15:01:47,744 ERROR An ERROR
+2023-10-14 15:01:47,744 CRITICAL A message of CRITICAL severity
+2023-10-14 15:01:47,822 INFO Scheduler started
+2023-10-14 15:01:47,845 INFO Scheduler started
+2023-10-14 19:34:21,036 INFO Received signal 15 (SIGTERM), stopping...
+2023-10-14 19:34:21,034 INFO Received signal 15 (SIGTERM), stopping...
+2023-10-14 19:34:21,055 INFO Scheduler has been shut down
+2023-10-14 19:34:21,061 INFO Scheduler has been shut down
+2023-10-14 19:40:11,967 INFO An INFO
+2023-10-14 19:40:11,971 WARNING A WARNING
+2023-10-14 19:40:11,972 ERROR An ERROR
+2023-10-14 19:40:11,973 CRITICAL A message of CRITICAL severity
+2023-10-14 19:40:12,127 INFO Scheduler started
+2023-10-14 19:40:12,651 INFO Scheduler started
+2023-10-14 20:07:46,355 INFO An INFO
+2023-10-14 20:07:46,359 WARNING A WARNING
+2023-10-14 20:07:46,361 ERROR An ERROR
+2023-10-14 20:07:46,363 CRITICAL A message of CRITICAL severity
+2023-10-14 20:07:46,520 INFO Scheduler started
+2023-10-14 20:07:47,060 INFO Scheduler started
+2023-10-14 20:14:13,410 INFO An INFO
+2023-10-14 20:14:13,415 WARNING A WARNING
+2023-10-14 20:14:13,417 ERROR An ERROR
+2023-10-14 20:14:13,418 CRITICAL A message of CRITICAL severity
+2023-10-14 20:14:13,606 INFO Scheduler started
+2023-10-14 20:14:14,304 INFO Scheduler started
+2023-10-14 20:14:25,917 INFO An INFO
+2023-10-14 20:14:25,921 WARNING A WARNING
+2023-10-14 20:14:25,923 ERROR An ERROR
+2023-10-14 20:14:25,925 CRITICAL A message of CRITICAL severity
+2023-10-14 20:14:26,065 INFO Scheduler started
+2023-10-14 20:14:26,569 INFO Scheduler started
+2023-10-14 20:14:40,761 ERROR No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/dispatcher.py", line 557, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/conversationhandler.py", line 627, in handle_update
+    new_state = handler.handle_update(update, dispatcher, check_result, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/handler.py", line 199, in handle_update
+    return self.callback(update, context)
+  File "/home/stud/Desktop/AviaDoor/admin_bot.py", line 34, in lesson_assign
+    with open("lesson.txt", "w") as file:
+  File "/home/stud/Desktop/AviaDoor/admin_bot.py", line 26, in open
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Дверь открыта")
+AttributeError: 'str' object has no attribute 'bot'
+2023-10-14 20:19:29,014 INFO An INFO
+2023-10-14 20:19:29,018 WARNING A WARNING
+2023-10-14 20:19:29,019 ERROR An ERROR
+2023-10-14 20:19:29,021 CRITICAL A message of CRITICAL severity
+2023-10-14 20:19:29,158 INFO Scheduler started
+2023-10-14 20:19:29,679 INFO Scheduler started
+2023-10-14 20:19:54,384 ERROR No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/dispatcher.py", line 557, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/conversationhandler.py", line 627, in handle_update
+    new_state = handler.handle_update(update, dispatcher, check_result, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/handler.py", line 199, in handle_update
+    return self.callback(update, context)
+  File "/home/stud/Desktop/AviaDoor/admin_bot.py", line 34, in lesson_assign
+    with open("lesson.txt", "w") as file:
+  File "/home/stud/Desktop/AviaDoor/admin_bot.py", line 26, in open
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Дверь открыта")
+AttributeError: 'str' object has no attribute 'bot'
+2023-10-14 20:23:44,551 INFO An INFO
+2023-10-14 20:23:44,555 WARNING A WARNING
+2023-10-14 20:23:44,557 ERROR An ERROR
+2023-10-14 20:23:44,558 CRITICAL A message of CRITICAL severity
+2023-10-14 20:23:44,692 INFO Scheduler started
+2023-10-14 20:23:45,169 INFO Scheduler started
+2023-10-14 20:24:04,636 ERROR No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/dispatcher.py", line 557, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/conversationhandler.py", line 627, in handle_update
+    new_state = handler.handle_update(update, dispatcher, check_result, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/handler.py", line 199, in handle_update
+    return self.callback(update, context)
+  File "/home/stud/Desktop/AviaDoor/admin_bot.py", line 35, in lesson_assign
+    with open("lesson.txt", "w") as file:
+  File "/home/stud/Desktop/AviaDoor/admin_bot.py", line 26, in open
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Дверь открыта")
+AttributeError: 'str' object has no attribute 'bot'
+2023-10-14 20:28:26,844 INFO An INFO
+2023-10-14 20:28:26,848 WARNING A WARNING
+2023-10-14 20:28:26,849 ERROR An ERROR
+2023-10-14 20:28:26,851 CRITICAL A message of CRITICAL severity
+2023-10-14 20:28:26,988 INFO Scheduler started
+2023-10-14 20:28:27,550 INFO Scheduler started
+2023-10-14 20:28:40,383 ERROR No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/dispatcher.py", line 557, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/conversationhandler.py", line 627, in handle_update
+    new_state = handler.handle_update(update, dispatcher, check_result, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/handler.py", line 199, in handle_update
+    return self.callback(update, context)
+  File "/home/stud/Desktop/AviaDoor/admin_bot.py", line 35, in lesson_assign
+    with open("lesson.txt", "w") as file:
+  File "/home/stud/Desktop/AviaDoor/admin_bot.py", line 26, in open
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Дверь открыта")
+AttributeError: 'str' object has no attribute 'bot'
+2023-10-14 20:29:56,207 INFO An INFO
+2023-10-14 20:29:56,211 WARNING A WARNING
+2023-10-14 20:29:56,212 ERROR An ERROR
+2023-10-14 20:29:56,214 CRITICAL A message of CRITICAL severity
+2023-10-14 20:29:56,359 INFO Scheduler started
+2023-10-14 20:29:56,818 INFO Scheduler started
+2023-10-14 20:31:21,089 ERROR No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/dispatcher.py", line 557, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/conversationhandler.py", line 627, in handle_update
+    new_state = handler.handle_update(update, dispatcher, check_result, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/handler.py", line 199, in handle_update
+    return self.callback(update, context)
+  File "/home/stud/Desktop/AviaDoor/admin_bot.py", line 35, in lesson_assign
+    with open("lesson.txt", "w") as file:
+  File "/home/stud/Desktop/AviaDoor/admin_bot.py", line 26, in open
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Дверь открыта")
+AttributeError: 'str' object has no attribute 'bot'
+2023-10-14 20:31:30,838 INFO An INFO
+2023-10-14 20:31:30,843 WARNING A WARNING
+2023-10-14 20:31:30,845 ERROR An ERROR
+2023-10-14 20:31:30,847 CRITICAL A message of CRITICAL severity
+2023-10-14 20:31:30,992 INFO Scheduler started
+2023-10-14 20:31:31,514 INFO Scheduler started
+2023-10-14 20:31:50,068 ERROR No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/dispatcher.py", line 557, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/conversationhandler.py", line 627, in handle_update
+    new_state = handler.handle_update(update, dispatcher, check_result, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/handler.py", line 199, in handle_update
+    return self.callback(update, context)
+  File "/home/stud/Desktop/AviaDoor/admin_bot.py", line 35, in lesson_assign
+    with open("lesson.txt", "w") as file:
+  File "/home/stud/Desktop/AviaDoor/admin_bot.py", line 26, in open
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Дверь открыта")
+AttributeError: 'str' object has no attribute 'bot'
+2023-10-14 20:33:01,488 INFO An INFO
+2023-10-14 20:33:01,492 WARNING A WARNING
+2023-10-14 20:33:01,493 ERROR An ERROR
+2023-10-14 20:33:01,495 CRITICAL A message of CRITICAL severity
+2023-10-14 20:33:01,639 INFO Scheduler started
+2023-10-14 20:33:02,102 INFO Scheduler started
+2023-10-14 20:33:10,046 ERROR No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/dispatcher.py", line 557, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/conversationhandler.py", line 627, in handle_update
+    new_state = handler.handle_update(update, dispatcher, check_result, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/handler.py", line 199, in handle_update
+    return self.callback(update, context)
+  File "/home/stud/Desktop/AviaDoor/admin_bot.py", line 35, in lesson_assign
+    with open("lesson.txt", "w") as file:
+  File "/home/stud/Desktop/AviaDoor/admin_bot.py", line 26, in open
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Дверь открыта")
+AttributeError: 'str' object has no attribute 'bot'
+2023-10-14 20:35:59,488 INFO An INFO
+2023-10-14 20:35:59,491 WARNING A WARNING
+2023-10-14 20:35:59,493 ERROR An ERROR
+2023-10-14 20:35:59,495 CRITICAL A message of CRITICAL severity
+2023-10-14 20:35:59,641 INFO Scheduler started
+2023-10-14 20:36:00,231 INFO Scheduler started
+2023-10-14 20:36:19,719 ERROR No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/dispatcher.py", line 557, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/conversationhandler.py", line 627, in handle_update
+    new_state = handler.handle_update(update, dispatcher, check_result, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/handler.py", line 199, in handle_update
+    return self.callback(update, context)
+  File "/home/stud/Desktop/AviaDoor/admin_bot.py", line 35, in lesson_assign
+    with open("lesson.txt", "w") as file:
+  File "/home/stud/Desktop/AviaDoor/admin_bot.py", line 26, in open
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Дверь открыта")
+AttributeError: 'str' object has no attribute 'bot'
+2023-10-14 20:37:12,619 INFO An INFO
+2023-10-14 20:37:12,623 WARNING A WARNING
+2023-10-14 20:37:12,625 ERROR An ERROR
+2023-10-14 20:37:12,626 CRITICAL A message of CRITICAL severity
+2023-10-14 20:37:12,802 INFO Scheduler started
+2023-10-14 20:37:13,376 INFO Scheduler started
+2023-10-14 20:48:39,789 INFO An INFO
+2023-10-14 20:48:39,793 WARNING A WARNING
+2023-10-14 20:48:39,795 ERROR An ERROR
+2023-10-14 20:48:39,796 CRITICAL A message of CRITICAL severity
+2023-10-14 20:48:39,978 INFO Scheduler started
+2023-10-14 20:49:39,517 INFO An INFO
+2023-10-14 20:49:39,521 WARNING A WARNING
+2023-10-14 20:49:39,522 ERROR An ERROR
+2023-10-14 20:49:39,524 CRITICAL A message of CRITICAL severity
+2023-10-14 20:49:39,679 INFO Scheduler started
+2023-10-14 20:49:40,319 INFO Scheduler started
+2023-10-14 20:49:51,601 ERROR No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/dispatcher.py", line 557, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/conversationhandler.py", line 627, in handle_update
+    new_state = handler.handle_update(update, dispatcher, check_result, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/handler.py", line 199, in handle_update
+    return self.callback(update, context)
+  File "/home/stud/Desktop/AviaDoor/admin_bot.py", line 34, in lesson_assign
+    with aiofiles.open('filename', mode='w') as f:
+AttributeError: __enter__
+2023-10-14 20:51:09,068 INFO An INFO
+2023-10-14 20:51:09,072 WARNING A WARNING
+2023-10-14 20:51:09,073 ERROR An ERROR
+2023-10-14 20:51:09,075 CRITICAL A message of CRITICAL severity
+2023-10-14 20:51:09,215 INFO Scheduler started
+2023-10-14 20:51:09,728 INFO Scheduler started
+2023-10-14 21:05:36,751 INFO Received signal 2 (SIGINT), stopping...
+2023-10-14 21:05:36,751 INFO Received signal 2 (SIGINT), stopping...
+2023-10-14 21:05:36,756 INFO Scheduler has been shut down
+2023-10-14 21:05:36,757 INFO Scheduler has been shut down
+2023-10-14 21:34:07,008 INFO An INFO
+2023-10-14 21:34:07,012 WARNING A WARNING
+2023-10-14 21:34:07,014 ERROR An ERROR
+2023-10-14 21:34:07,015 CRITICAL A message of CRITICAL severity
+2023-10-14 21:34:07,153 INFO Scheduler started
+2023-10-14 21:34:07,688 INFO Scheduler started
+2023-10-14 21:34:43,250 ERROR No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/dispatcher.py", line 557, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/conversationhandler.py", line 627, in handle_update
+    new_state = handler.handle_update(update, dispatcher, check_result, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/handler.py", line 199, in handle_update
+    return self.callback(update, context)
+  File "/home/stud/Desktop/AviaDoor/admin_bot.py", line 39, in cancel
+    bd.insert_message()
+TypeError: insert_message() missing 1 required positional argument: 'message'
+2023-10-14 21:37:43,690 INFO An INFO
+2023-10-14 21:37:43,694 WARNING A WARNING
+2023-10-14 21:37:43,695 ERROR An ERROR
+2023-10-14 21:37:43,697 CRITICAL A message of CRITICAL severity
+2023-10-14 21:37:43,846 INFO Scheduler started
+2023-10-14 21:37:44,405 INFO Scheduler started
+2023-10-14 21:37:47,038 ERROR No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/dispatcher.py", line 557, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/handler.py", line 199, in handle_update
+    return self.callback(update, context)
+  File "/home/stud/Desktop/AviaDoor/bot.py", line 58, in lesson
+    update.message.reply_text('Следующее занятие пройдёт: ' + bd.select_message())
+TypeError: can only concatenate str (not "NoneType") to str
+2023-10-14 21:37:54,406 ERROR No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/dispatcher.py", line 557, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/handler.py", line 199, in handle_update
+    return self.callback(update, context)
+  File "/home/stud/Desktop/AviaDoor/bot.py", line 58, in lesson
+    update.message.reply_text('Следующее занятие пройдёт: ' + bd.select_message())
+TypeError: can only concatenate str (not "NoneType") to str
+2023-10-14 21:38:40,659 INFO An INFO
+2023-10-14 21:38:40,663 WARNING A WARNING
+2023-10-14 21:38:40,664 ERROR An ERROR
+2023-10-14 21:38:40,666 CRITICAL A message of CRITICAL severity
+2023-10-14 21:38:40,803 INFO Scheduler started
+2023-10-14 21:38:41,331 INFO Scheduler started
+2023-10-14 21:40:57,126 INFO An INFO
+2023-10-14 21:40:57,131 WARNING A WARNING
+2023-10-14 21:40:57,132 ERROR An ERROR
+2023-10-14 21:40:57,134 CRITICAL A message of CRITICAL severity
+2023-10-14 21:40:57,276 INFO Scheduler started
+2023-10-14 21:40:57,738 INFO Scheduler started
+2023-10-14 21:41:44,899 INFO An INFO
+2023-10-14 21:41:44,904 WARNING A WARNING
+2023-10-14 21:41:44,905 ERROR An ERROR
+2023-10-14 21:41:44,906 CRITICAL A message of CRITICAL severity
+2023-10-14 21:41:45,049 INFO Scheduler started
+2023-10-14 21:41:45,601 INFO Scheduler started
+2023-10-14 21:44:04,187 INFO An INFO
+2023-10-14 21:44:04,191 WARNING A WARNING
+2023-10-14 21:44:04,192 ERROR An ERROR
+2023-10-14 21:44:04,194 CRITICAL A message of CRITICAL severity
+2023-10-14 21:44:04,346 INFO Scheduler started
+2023-10-14 21:44:04,894 INFO Scheduler started
+2023-10-14 21:46:49,350 INFO An INFO
+2023-10-14 21:46:49,354 WARNING A WARNING
+2023-10-14 21:46:49,355 ERROR An ERROR
+2023-10-14 21:46:49,357 CRITICAL A message of CRITICAL severity
+2023-10-14 21:46:49,520 INFO Scheduler started
+2023-10-14 21:46:50,066 INFO Scheduler started
+2023-10-14 21:46:59,189 ERROR No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/dispatcher.py", line 557, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/handler.py", line 199, in handle_update
+    return self.callback(update, context)
+  File "/home/stud/Desktop/AviaDoor/bot.py", line 58, in lesson
+    update.message.reply_text('Следующее занятие пройдёт: ' + bd.select_message())
+  File "/home/stud/Desktop/AviaDoor/bd.py", line 335, in select_message
+    record = "".join(i for i in id if i.isalpha())
+TypeError: 'builtin_function_or_method' object is not iterable
+2023-10-14 21:47:26,042 INFO An INFO
+2023-10-14 21:47:26,046 WARNING A WARNING
+2023-10-14 21:47:26,048 ERROR An ERROR
+2023-10-14 21:47:26,049 CRITICAL A message of CRITICAL severity
+2023-10-14 21:47:26,189 INFO Scheduler started
+2023-10-14 21:47:26,711 INFO Scheduler started
+2023-10-14 21:48:40,335 INFO An INFO
+2023-10-14 21:48:40,339 WARNING A WARNING
+2023-10-14 21:48:40,340 ERROR An ERROR
+2023-10-14 21:48:40,342 CRITICAL A message of CRITICAL severity
+2023-10-14 21:48:40,494 INFO Scheduler started
+2023-10-14 21:48:41,048 INFO Scheduler started
+2023-10-14 21:52:48,244 INFO An INFO
+2023-10-14 21:52:48,248 WARNING A WARNING
+2023-10-14 21:52:48,250 ERROR An ERROR
+2023-10-14 21:52:48,251 CRITICAL A message of CRITICAL severity
+2023-10-14 21:52:48,400 INFO Scheduler started
+2023-10-14 21:52:48,875 INFO Scheduler started
+2023-10-14 21:53:07,882 ERROR No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/dispatcher.py", line 557, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/handler.py", line 199, in handle_update
+    return self.callback(update, context)
+  File "/home/stud/Desktop/AviaDoor/bot.py", line 58, in lesson
+    update.message.reply_text('Следующее занятие пройдёт: ' + bd.select_message())
+TypeError: can only concatenate str (not "list") to str
+2023-10-14 21:53:12,159 ERROR No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/dispatcher.py", line 557, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/handler.py", line 199, in handle_update
+    return self.callback(update, context)
+  File "/home/stud/Desktop/AviaDoor/bot.py", line 58, in lesson
+    update.message.reply_text('Следующее занятие пройдёт: ' + bd.select_message())
+TypeError: can only concatenate str (not "list") to str
+2023-10-14 21:53:56,984 INFO An INFO
+2023-10-14 21:53:56,997 WARNING A WARNING
+2023-10-14 21:53:56,999 ERROR An ERROR
+2023-10-14 21:53:57,001 CRITICAL A message of CRITICAL severity
+2023-10-14 21:53:57,188 INFO Scheduler started
+2023-10-14 21:53:57,788 INFO Scheduler started
+2023-10-14 21:57:31,467 INFO An INFO
+2023-10-14 21:57:31,471 WARNING A WARNING
+2023-10-14 21:57:31,472 ERROR An ERROR
+2023-10-14 21:57:31,474 CRITICAL A message of CRITICAL severity
+2023-10-14 21:57:31,621 INFO Scheduler started
+2023-10-14 21:57:32,174 INFO Scheduler started
+2023-10-14 21:57:34,984 ERROR No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/dispatcher.py", line 557, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/handler.py", line 199, in handle_update
+    return self.callback(update, context)
+  File "/home/stud/Desktop/AviaDoor/bot.py", line 58, in lesson
+    update.message.reply_text('Следующее занятие пройдёт: ' + bd.select_message())
+TypeError: can only concatenate str (not "tuple") to str
+2023-10-14 21:58:02,542 INFO An INFO
+2023-10-14 21:58:02,547 WARNING A WARNING
+2023-10-14 21:58:02,548 ERROR An ERROR
+2023-10-14 21:58:02,550 CRITICAL A message of CRITICAL severity
+2023-10-14 21:58:02,704 INFO Scheduler started
+2023-10-14 21:58:03,274 INFO Scheduler started
+2023-10-14 22:02:00,664 INFO An INFO
+2023-10-14 22:02:00,668 WARNING A WARNING
+2023-10-14 22:02:00,669 ERROR An ERROR
+2023-10-14 22:02:00,671 CRITICAL A message of CRITICAL severity
+2023-10-14 22:02:00,827 INFO Scheduler started
+2023-10-14 22:02:01,441 INFO Scheduler started
+2023-10-14 22:02:03,864 ERROR No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/dispatcher.py", line 557, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/handler.py", line 199, in handle_update
+    return self.callback(update, context)
+  File "/home/stud/Desktop/AviaDoor/bot.py", line 58, in lesson
+    update.message.reply_text('Следующее занятие пройдёт: ' + bd.select_message())
+  File "/home/stud/Desktop/AviaDoor/bd.py", line 335, in select_message
+    record = "".join(i for i in id if i == ("(" or "'" or ")"))
+TypeError: 'builtin_function_or_method' object is not iterable
+2023-10-14 22:04:29,171 INFO An INFO
+2023-10-14 22:04:29,175 WARNING A WARNING
+2023-10-14 22:04:29,176 ERROR An ERROR
+2023-10-14 22:04:29,177 CRITICAL A message of CRITICAL severity
+2023-10-14 22:04:29,329 INFO Scheduler started
+2023-10-14 22:04:29,985 INFO Scheduler started
+2023-10-14 22:05:19,045 INFO An INFO
+2023-10-14 22:05:19,050 WARNING A WARNING
+2023-10-14 22:05:19,051 ERROR An ERROR
+2023-10-14 22:05:19,053 CRITICAL A message of CRITICAL severity
+2023-10-14 22:05:19,202 INFO Scheduler started
+2023-10-14 22:05:19,787 INFO Scheduler started
+2023-10-14 22:07:12,286 INFO An INFO
+2023-10-14 22:07:12,291 WARNING A WARNING
+2023-10-14 22:07:12,293 ERROR An ERROR
+2023-10-14 22:07:12,295 CRITICAL A message of CRITICAL severity
+2023-10-14 22:07:12,456 INFO Scheduler started
+2023-10-14 22:07:12,974 INFO Scheduler started
+2023-10-14 22:26:08,861 INFO An INFO
+2023-10-14 22:26:08,866 WARNING A WARNING
+2023-10-14 22:26:08,867 ERROR An ERROR
+2023-10-14 22:26:08,868 CRITICAL A message of CRITICAL severity
+2023-10-14 22:26:09,007 INFO Scheduler started
+2023-10-14 22:26:09,684 INFO Scheduler started
+2023-10-14 22:29:53,965 ERROR No error handlers are registered, logging exception.
+Traceback (most recent call last):
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/dispatcher.py", line 557, in process_update
+    handler.handle_update(update, self, check, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/conversationhandler.py", line 627, in handle_update
+    new_state = handler.handle_update(update, dispatcher, check_result, context)
+  File "/home/stud/.local/lib/python3.9/site-packages/telegram/ext/handler.py", line 199, in handle_update
+    return self.callback(update, context)
+  File "/home/stud/Desktop/AviaDoor/admin_bot.py", line 39, in cancel
+    bd.insert_message()
+TypeError: insert_message() missing 1 required positional argument: 'message'

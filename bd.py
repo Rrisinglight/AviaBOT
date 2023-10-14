@@ -320,3 +320,43 @@ def approve(username, approve):
     finally:
         if connection.is_connected():
             connection.close()
+
+def select_message():
+    try:
+        connection = mysql.connector.connect(host='localhost',
+                                            database='aviators',
+                                            user='user1',
+                                            password='829')
+
+        sql_select_Query = """SELECT message FROM text ORDER BY id DESC LIMIT 1"""
+        cursor = connection.cursor()
+        cursor.execute(sql_select_Query)
+        record = str(cursor.fetchone())
+        return(record[2:-3])
+
+    except mysql.connector.Error as e:
+        print("Ошибка при чтении данных из таблицы MySQL", e)
+    finally:
+        if connection.is_connected():
+            connection.close()
+            cursor.close()
+
+def insert_message(message):
+    try:
+        connection = mysql.connector.connect(host='localhost',
+                                            database='aviators',
+                                            user='user1',
+                                            password='829')
+        cursor = connection.cursor()
+
+        sql_select_query = f"""INSERT INTO text (message)
+        VALUES ("{message}");"""
+        cursor.execute(sql_select_query)
+
+        connection.commit()
+
+    except mysql.connector.Error as error:
+        print("Не удалось добавить данные в таблицу: {}".format(error))
+    finally:
+        if connection.is_connected():
+            connection.close()

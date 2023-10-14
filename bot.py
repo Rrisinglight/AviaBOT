@@ -1,39 +1,68 @@
 #!/usr/bin/python3
 import mysql.connector
 import datetime
+import aiofiles
+import asyncio
 import bd, RFID, admin_bot, threading, time
 from threading import Thread
 from multiprocessing import Process, Queue
 from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CallbackContext, ConversationHandler, CallbackQueryHandler, MessageHandler, TypeHandler, CommandHandler, Filters
 from telegram_bot_pagination import InlineKeyboardPaginator
+from urllib3.contrib.socks import SOCKSProxyManager
 
 import logging
 
-logging.basicConfig(level=logging.INFO, filename="py_log.log",filemode="w", format="%(asctime)s %(levelname)s %(message)s")
+logging.basicConfig(level=logging.INFO, filename="py_log.log", filemode="a", format="%(asctime)s %(levelname)s %(message)s")
 logging.debug("A DEBUG Message")
 logging.info("An INFO")
 logging.warning("A WARNING")
 logging.error("An ERROR")
 logging.critical("A message of CRITICAL severity")
 
+logger = logging.getLogger(__name__)
 
 NAME, LAST_NAME, STUD_TYPE, BUTTON, WELCOME = range(5)
-type_now = int
 user_type_markup = ReplyKeyboardMarkup([['Студент', 'Преподаватель']], resize_keyboard=True)
 
+# def check(context: CallbackContext):
+#     print(admin_bot.usrQ)
+#     if len(admin_bot.usrQ) != 0:
+#         for i in admin_bot.usrQ:
+#             context.bot.send_message(chat_id=593344137, text="Получено подтверждение от преподавателя, теперь вы можете войти в кабинет по своему пропуску!")
+#         admin_bot.usqQ.clear()
+#     else:
+#         context.bot.send_message(chat_id=593344137, text="catch")
+
+def get_lesson():
+    with open("lesson.txt", "r") as file:
+        lesson = file.read()
+    return lesson
 
 def echo(update: Update, context: CallbackContext) -> None:
     context.bot.send_message(chat_id=update.effective_chat.id, text="А?")
 
-def cancel(update: Update, context: CallbackContext) -> None:
+def error_handler(update: Update, context: CallbackContext) -> None:
+    global updater
+    for i in range(2):
+        try:
+            context.bot.send_message(chat_id=593344137, text="error")
+        except:
+            updater = None
+            updater = Updater("6040908427:AAG5SU0Trmc_RLzFBWFzvlmk8NPlYUsHke8")
+            logger.error(msg="Trying to resolve exception", exc_info=context.error)
+            continue
+        break
 
+def lesson(update: Update, context: CallbackContext) -> None:
+    update.message.reply_text(bd.select_message())
+
+def cancel(update: Update, context: CallbackContext) -> None:
     update.message.reply_text('До встречи, авиатор!', reply_markup=ReplyKeyboardRemove())
 
     return ConversationHandler.END
 
 def cancel_main(update: Update, context: CallbackContext) -> None:
-
     update.message.reply_text('Попробуйте написать команду /start', reply_markup=ReplyKeyboardRemove())
 
     return ConversationHandler.END
@@ -42,7 +71,6 @@ def feedback(update: Update, context: CallbackContext) -> None:
     context.bot.send_contact(chat_id=update.effective_chat.id, phone_number='+7 905 420-02-16', first_name='Алексей', last_name='Рычагов')
 
 def start(update, context: CallbackContext) -> int:
-
     user = update.effective_user.to_dict()
     bd.insert_tg_user(user.get('id'), update.effective_chat.id, user.get('first_name'), user.get('last_name'), user.get('username'))
 
@@ -53,7 +81,6 @@ def start(update, context: CallbackContext) -> int:
     return NAME
 
 def last_name(update: Update, context: CallbackContext) -> int:
-    
     first_name = str(update.message.text)
     if (first_name.isalpha() == True) and (len(first_name) <= 48):
         result = bd.insert_name(update.effective_chat.id, first_name)
@@ -68,7 +95,6 @@ def last_name(update: Update, context: CallbackContext) -> int:
         return NAME
 
 def stud_type(update: Update, context: CallbackContext) -> int:
-
     last_name = str(update.message.text)
 
     if (last_name.isalpha() == True) and (len(last_name) <= 48):
@@ -105,7 +131,6 @@ def button(update: Update, context: CallbackContext) -> int:
     return WELCOME
 
 def group(update: Update, context: CallbackContext) -> int:
-
     last_name = str(update.message.text)
 
     if (last_name.isalpha() == True) and (len(last_name) <= 48):
@@ -119,10 +144,8 @@ def group(update: Update, context: CallbackContext) -> int:
     else:
         context.bot.send_message(chat_id=update.effective_chat.id, text='Пожалуйста, ограничься алфавитными символами', reply_markup=ForceReply())
         return LAST_NAME
-    
 
 def welcome(update: Update, context: CallbackContext) -> int:
-
     group = str(update.message.text)
     bd.insert_info(update.effective_chat.id, update.effective_chat.username, 'Обновил данные')
     if bd.ddos_check(update.effective_chat.id) <= 3:
@@ -167,10 +190,11 @@ def key(update: Update, context: CallbackContext) -> None:
             context.bot.send_message(chat_id=update.effective_chat.id, text="Ключ успешно записан: " + str(card))
             context.bot.send_message(chat_id=update.effective_chat.id, text="Осталось дождаться подтверждения от преподавателя.\nНапиши @eugerhan, если уже долго ждёшь подтверждения.")
             bd.insert_info(update.effective_chat.id, update.effective_chat.username, 'Привязал новый ключ')
+            context.bot.send_message(chat_id=593344137, text="Новый пользователь ожидает подтверждения, перейдите в @Door_admin_bot")
+            
             return ConversationHandler.END
 
 def main() -> None:
-
     updater = Updater("5838936536:AAHWgfvpzUMWoUzsP37X2xZNrDSvlWxbizc")
 
     conv_handler = ConversationHandler(
@@ -197,11 +221,16 @@ def main() -> None:
         },
         fallbacks = [CommandHandler('cancel', cancel)],
     )
-
+    
+    #updater.dispatcher.add_error_handler(error_handler)
     updater.dispatcher.add_handler(conv_handler)
+
     updater.dispatcher.add_handler(CommandHandler('feedback', feedback))
     updater.dispatcher.add_handler(CommandHandler('cancel', cancel_main))
+    updater.dispatcher.add_handler(CommandHandler('lesson', lesson))
     updater.dispatcher.add_handler(MessageHandler(Filters.text & ~(Filters.command), echo))
+    # jq = updater.job_queue
+    # jq.run_repeating(check, interval=5)
 
     updater.start_polling()
 
@@ -211,7 +240,8 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    global q
+    global q, lesson_content
+    lesson_content = get_lesson()
     q = Queue()
     button_tred = Thread(name='button', target=RFID.push_button, daemon=True)
     blink_tred = Thread(name='blink', target=RFID.action_blink, daemon=True)

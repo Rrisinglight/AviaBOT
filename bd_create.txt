@@ -34,6 +34,12 @@ CREATE TABLE door_log
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE text
+(
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    text VARCHAR(512) DEFAULT 'Занятия проходят каждый четверг, в 18:00'
+);
+
 INSERT INTO tg_users (tg_id, chat_id, tg_first_name, tg_last_name, username)
 VALUES (400349818, 400349818, 'Daniil', 'Muravlev', 'Daniil058');
 INSERT INTO tg_users (tg_id, chat_id, tg_first_name, tg_last_name, username)
@@ -47,6 +53,17 @@ INSERT INTO users (tg_id, first_name, last_name, academ_group, RFID)
 VALUES (317612639, 'Евгений', 'Ерхан', 'Нет', '670096F6797E');
 INSERT INTO users (tg_id, first_name, last_name, academ_group, RFID)
 VALUES (667770847, 'Елизавета', 'Семенина', 'БИВТ-20-3', NULL);
+
+
+INSERT INTO tg_users (tg_id, chat_id, tg_first_name, tg_last_name, username)
+VALUES (00000000, 00000000, 'Уборщица', '8 этаж', 'uborka');
+INSERT INTO users (tg_id, first_name, last_name, academ_group, RFID)
+VALUES (00000000, 'Уборщица', '8 этаж', 'нет', '11009CAD1636');
+
+INSERT INTO tg_users (tg_id, chat_id, tg_first_name, tg_last_name, username)
+VALUES (00000001, 00000001, 'Охрана', 'МИСИС', 'oxrana');
+INSERT INTO users (tg_id, first_name, last_name, academ_group, RFID)
+VALUES (00000001, 'Охрана', '8 этаж', 'МИСИС', '2700A9A05D73');
 
 
 
